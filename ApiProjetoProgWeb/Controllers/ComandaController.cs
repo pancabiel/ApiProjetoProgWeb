@@ -24,7 +24,7 @@ namespace ApiProjetoProgWeb.Controllers
             {
                 return Ok(_comandaDAO.buscar().Select(comanda => new
                 {
-                    idUsuario = comanda.id,
+                    id = comanda.id,
                     nomeUsuario = comanda.nomeUsuario,
                     telefoneUsuario = comanda.telefoneUsuario,
                     comandaProdutos = comanda.comandaProdutos.Select(item => new
@@ -56,7 +56,7 @@ namespace ApiProjetoProgWeb.Controllers
                 if (comanda != null)
                     return Ok(new
                     {
-                        idUsuario = comanda.id,
+                        id = comanda.id,
                         nomeUsuario = comanda.nomeUsuario,
                         telefoneUsuario = comanda.telefoneUsuario,
                         comandaProdutos = comanda.comandaProdutos.Select(item => new
