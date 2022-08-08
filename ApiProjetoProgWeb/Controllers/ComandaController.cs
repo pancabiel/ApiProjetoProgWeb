@@ -80,13 +80,29 @@ namespace ApiProjetoProgWeb.Controllers
             }
         }
 
-        [HttpPost("PostComanda")]
-        public IActionResult PostComanda(ComandaDTO comanda)
+        [HttpPost(Name = "PostComanda")]
+        public IActionResult PostComanda(ComandaDTO comandaDTO)
         {
             try
             {
-                _comandaDAO.adicionar(comanda);
-                return Ok(comanda);
+                Comanda comanda = _comandaDAO.adicionar(comandaDTO);
+                return Ok(new
+                {
+                    id = comanda.id,
+                    nomeUsuario = comanda.nomeUsuario,
+                    telefoneUsuario = comanda.telefoneUsuario,
+                    comandaProdutos = comanda.comandaProdutos.Select(item => new
+                    {
+                        id = item.id,
+                        idProduto = item.idProduto,
+                        quantidade = item.quantidade,
+                        produto = new
+                        {
+                            nome = item.produto.nome,
+                            preco = item.produto.preco,
+                        }
+                    }).ToList()
+                });
             }
             catch (Exception ex)
             {

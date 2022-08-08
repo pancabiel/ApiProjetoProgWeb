@@ -30,11 +30,12 @@ namespace ApiProjetoProgWeb.DAO
                 .FirstOrDefault(x => x.id == id);
         }
 
-        public void adicionar(ComandaDTO comandaDTO)
+        public Comanda adicionar(ComandaDTO comandaDTO)
         {
             Comanda comanda = popularComandaDTOParaComanda(comandaDTO);
             _context.Add(comanda);
             _context.SaveChanges();
+            return comanda;
         }
         internal void alterar(int id, ComandaDTO comandaDTO)
         {
@@ -46,8 +47,8 @@ namespace ApiProjetoProgWeb.DAO
         private Comanda popularComandaDTOParaComanda(ComandaDTO comandaDTO)
         {
             var comanda = new Comanda
-            {
-                id = comandaDTO.id.Value,
+            { 
+                id = comandaDTO.id.HasValue ? comandaDTO.id.Value : 0,
                 nomeUsuario = comandaDTO.nomeUsuario,
                 telefoneUsuario = comandaDTO.telefoneUsuario,
                 comandaProdutos = new List<ComandaProduto>()
@@ -58,7 +59,7 @@ namespace ApiProjetoProgWeb.DAO
                 Produto produto = _context.Produtos.FirstOrDefault(x => x.id == item.idProduto);
                 comanda.comandaProdutos.Add(new ComandaProduto
                 {
-                    id = item.id,
+                    id = item.id.HasValue ? item.id.Value : 0,
                     idComanda = comanda.id,
                     idProduto = item.idProduto,
                     quantidade = item.quantidade,
